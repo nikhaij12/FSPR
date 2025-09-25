@@ -52,13 +52,16 @@
                 outline: none;
               }
 
+              /* Placeholders (match the light grey of +91) */
               ::placeholder { color: #9aa0a6; opacity: 1; }
               :-ms-input-placeholder { color: #9aa0a6; }
               ::-ms-input-placeholder { color: #9aa0a6; }
 
+              /* Make the SELECT show a light-grey “placeholder” when no value chosen */
               select:required:invalid { color: #9aa0a6; }
-              option[value=""] { color: #9aa0a6; }
-              option { color: #000; }
+              option[value=""] { color: #9aa0a6; }   /* the placeholder option */
+              option { color: #000; }               /* real options are black */
+              /* Hide the placeholder option in the dropdown list */
               option[disabled][value=""] { display: none; }
 
               .invalid { border-color: red !important; }
@@ -120,13 +123,16 @@
             <input type="submit" class="submit" value="Submit">
           `;
 
+          // Normalize & validate on typing
           formContainer.addEventListener("input", function () {
             const inputs = formContainer.querySelectorAll("input, select");
             const email = formContainer.querySelector(".email");
             const cc = formContainer.querySelector(".country_code");
 
+            // normalize email
             if (email) email.value = email.value.toLowerCase();
 
+            // normalize country code: single leading '+', digits only after
             if (cc) {
               let val = cc.value.replace(/\s+/g, "");
               const hasPlus = val.startsWith("+");
@@ -210,11 +216,7 @@
               }
             }
           },
-          assistant: { 
-            extensions: [FormExtension],
-            // Inline Base64 stylesheet to hide footer branding
-            stylesheet: "data:text/css;base64,LnZmcmMtZm9vdGVyLC52ZnJjLWZvb3RlciAqIHsgZGlzcGxheTogbm9uZSAhaW1wb3J0YW50OyB2aXNpYmlsaXR5OiBoaWRkZW4gIWltcG9ydGFudDt9"
-          },
+          assistant: { extensions: [FormExtension] },
           voice: { url: "https://runtime-api.voiceflow.com" }
         });
       };
